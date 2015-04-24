@@ -1,0 +1,1 @@
+Software = new Mongo.Collection("software");

@@ -1,0 +1,89 @@
+<template name="vm">
+  <div class="manage-users row">
+    <div class="offset3 span9">
+      <ul class="user-list">
+
+        {{#each users}}
+            {{#if currentUser}}
+        <li>
+          <div class="person" data-id="{{_id}}">
+
+            <div class="name">
+              {{#each emails}}
+              <a href="#">{{address}}</a>
+              {{/each}}
+            </div>
+
+
+
+            <div class="name">
+              <a href="#">{{username}}</a>
+            </div>
+
+            {{#if profile.mobile}}
+            <div>{{mobile}} </div>
+            {{/if}}
+
+            <div><span class="help">Click on email or any software to edit:</span>
+              <ul class="software">
+                {{#each software}}
+                <li><span class="software">{{.}}</span></li>
+                {{/each}}
+              </ul>
+            </div>
+
+          </div>
+        </li>
+
+
+            {{/if}}
+        {{/each}}
+      </ul>
+
+
+      {{> editVmForm}}
+
+
+
+
+
+    </div>
+  </div>
+</template>
+
+<template name="editVmForm">
+  <div id="user-software" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="manage-software-form">
+
+      <div class="modal-header">
+        <h3 id="myModalLabel">Software</h3>
+      </div>
+
+      <div class="modal-body">
+        {{#with user}}
+        <input type="hidden" id="_id" name="_id" value="{{_id}}" />
+
+        <div>
+          <h4>{{#each emails}}{{address}} {{/each}}</h4>
+          <h4>{{username}}</h4>
+        </div>
+
+        <br />
+        <select id="software" name="software" multiple>
+          {{#each allSoftware}}
+          <option value="{{.}}">{{.}}</option>
+          {{/each}}
+        </select>
+        {{/with}}
+      </div>
+
+
+      <div class="modal-footer">
+        <button id="cancelChanges" class="btn">Cancel</button>
+        <button id="saveChanges" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+</template>
+
+
