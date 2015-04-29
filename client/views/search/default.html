@@ -3,28 +3,18 @@
     <div class="offset3 span9">
       <ul class="user-list">
 
-        {{#each users}}
-            {{#if currentUser}}
+{{#if currentUser}}
+
+            {{#with currentUser}}
+
         <li>
           <div class="person" data-id="{{_id}}">
 
-            <div class="name">
-              {{#each emails}}
-              <a href="#">{{address}}</a>
-              {{/each}}
-            </div>
+              <div class="name">
+                  <a href="#">State</a>
+              </div>
 
-
-
-            <div class="name">
-              <a href="#">{{username}}</a>
-            </div>
-
-            {{#if profile.mobile}}
-            <div>{{mobile}} </div>
-            {{/if}}
-
-            <div><span class="help">Click on email or any state to edit:</span>
+            <div>
               <ul class="state">
                 {{#each state}}
                 <li><span class="state">{{.}}</span></li>
@@ -35,17 +25,41 @@
           </div>
         </li>
 
+            {{/with}}
 
-            {{/if}}
-        {{/each}}
+{{else}}
+
+    {{#with guest}}
+
+
+        <li>
+            <div class="person" data-id="{{_id}}">
+
+                <div class="name">
+                    <a href="#">State</a>
+                </div>
+
+                <div>
+                    <ul class="state">
+                        {{#each state}}
+                            <li><span class="state">{{.}}</span></li>
+                        {{/each}}
+                    </ul>
+                </div>
+
+            </div>
+        </li>
+
+
+
+
+    {{/with}}
+
+{{/if}}
+
       </ul>
 
-
       {{> editSearchForm}}
-
-
-
-
 
     </div>
   </div>
@@ -56,18 +70,20 @@
     <form id="manage-state-form">
 
       <div class="modal-header">
-        <h3 id="myModalLabel">States</h3>
+        <h3 id="myModalLabel">State</h3>
       </div>
 
       <div class="modal-body">
-        {{#with user}}
-        <input type="hidden" id="_id" name="_id" value="{{_id}}" />
 
+        {{#with user}}
+
+        <input type="hidden" id="_id" name="_id" value="{{_id}}" />
+<!--
         <div>
           <h4>{{#each emails}}{{address}} {{/each}}</h4>
           <h4>{{username}}</h4>
         </div>
-
+-->
         <br />
         <select id="state" name="state" multiple>
           {{#each allState}}

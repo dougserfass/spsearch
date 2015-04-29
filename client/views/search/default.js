@@ -12,7 +12,19 @@ Template.search.events({
 })
 
 Template.search.helpers({
-  state: function () {
+
+    guest: function () {
+        if(Meteor.user().profile.guest) {
+            return Meteor.user();
+        }
+        return null;
+
+
+        //return Meteor.user().profile.guest;
+    },
+
+
+    state: function () {
     return this.state
   },
   users: function () {
