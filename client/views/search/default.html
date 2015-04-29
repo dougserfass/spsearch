@@ -1,4 +1,4 @@
-<template name="vm">
+<template name="search">
   <div class="manage-users row">
     <div class="offset3 span9">
       <ul class="user-list">
@@ -25,9 +25,9 @@
             {{/if}}
 
             <div><span class="help">Click on email or any state to edit:</span>
-              <ul class="software">
-                {{#each software}}
-                <li><span class="software">{{.}}</span></li>
+              <ul class="state">
+                {{#each state}}
+                <li><span class="state">{{.}}</span></li>
                 {{/each}}
               </ul>
             </div>
@@ -41,7 +41,7 @@
       </ul>
 
 
-      {{> editVmForm}}
+      {{> editSearchForm}}
 
 
 
@@ -51,12 +51,12 @@
   </div>
 </template>
 
-<template name="editVmForm">
-  <div id="user-software" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <form id="manage-software-form">
+<template name="editSearchForm">
+  <div id="user-state" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form id="manage-state-form">
 
       <div class="modal-header">
-        <h3 id="myModalLabel">Software</h3>
+        <h3 id="myModalLabel">States</h3>
       </div>
 
       <div class="modal-body">
@@ -69,8 +69,8 @@
         </div>
 
         <br />
-        <select id="software" name="software" multiple>
-          {{#each allSoftware}}
+        <select id="state" name="state" multiple>
+          {{#each allState}}
           <option value="{{.}}">{{.}}</option>
           {{/each}}
         </select>

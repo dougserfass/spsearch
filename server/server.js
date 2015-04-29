@@ -2,13 +2,13 @@
 
 Meteor.startup(function () {
   Meteor.methods({
-    updateSoftware: function (targetUserId, software) {
+    updateState: function (targetUserId, state) {
       check(targetUserId, String)
-      check(software, [String])
+      check(state, [String])
 
       Meteor.users.update({_id:targetUserId}, {
         $set: {
-          software: software
+          state: state
         }
       })
     }

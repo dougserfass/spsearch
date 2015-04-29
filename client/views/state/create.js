@@ -1,10 +1,10 @@
-Template.createSoftware.events({
+Template.createState.events({
   'submit form': function(e) {
     e.preventDefault();
-    var software = {
+    var state = {
       name: $(e.target).find('[name=name]').val()
     }
-    Software.insert(software);
-    Router.go('vm');
+    State.insert(state);
+    Router.go('search');
   }
 });

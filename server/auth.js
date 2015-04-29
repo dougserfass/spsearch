@@ -3,7 +3,7 @@
 //Houston._admins.remove(houstonAdmin);
 
 Accounts.onCreateUser(function(options, user) {
-    user.software = [];
+    user.state = [];
   if(options.profile)
     user.profile = options.profile;
   return user;

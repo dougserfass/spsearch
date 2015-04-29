@@ -2,18 +2,18 @@
 
 Meteor.startup(function () {
   Meteor.subscribe('users')
-  Meteor.subscribe('software')
+  Meteor.subscribe('state')
     Meteor.subscribe('user')
 })
 
-Template.vm.events({
-  'click .name a': manageSoftwareClicked,
-  'click .software': manageSoftwareClicked
+Template.search.events({
+  'click .name a': manageStateClicked,
+  'click .state': manageStateClicked
 })
 
-Template.vm.helpers({
-  software: function () {
-    return this.software
+Template.search.helpers({
+  state: function () {
+    return this.state
   },
   users: function () {
     return Meteor.users.find()
@@ -41,7 +41,7 @@ Template.vm.helpers({
   }
 })
 
-function manageSoftwareClicked (evt) {
+function manageStateClicked (evt) {
   var $person,
     userId
 
@@ -52,7 +52,7 @@ function manageSoftwareClicked (evt) {
 
   Session.set('selectedUserId', userId)
 
-  $('#user-software').modal()
+  $('#user-state').modal()
 
 }
 
@@ -67,16 +67,16 @@ var logRender = function () {
 
   if (!user) return
 
-  $options = $('option', '#software')
+  $options = $('option', '#state')
 
   $options.each(function (index, option) {
     var $option = $(option),
       val = $option.val(),
-      hasSoftware
+      hasState
 
-    hasSoftware = _.contains(user.software, val)
+    hasState = _.contains(user.state, val)
 
-    if (hasSoftware) {
+    if (hasState) {
       $option.attr('selected', true)
     } else {
       $option.removeAttr('selected')
@@ -86,32 +86,32 @@ var logRender = function () {
   renderMultiSelect()
 };
 
-Template.editVmForm.rendered = function () {
+Template.editSearchForm.rendered = function () {
   logRender();
 }
 
 function renderMultiSelect () {
-  var $software,
+  var $state,
     data,
     dataExists
 
   if (!jQuery.fn.multiSelect) return
 
-  $software = $('#software')
-  data = $software.data('multiselect')
+  $state = $('#state')
+  data = $state.data('multiselect')
   dataExists = data ? true : false
 
   if (dataExists) {
-    $software.data('multiselect', null)
+    $state.data('multiselect', null)
   }
 
-  $software.multiSelect({
-    selectableHeader: "Available",
-    selectionHeader: "Used"
+  $state.multiSelect({
+    selectableHeader: "Not Selected",
+    selectionHeader: "Selected"
   })
 }
 
-Template.editVmForm.events({
+Template.editSearchForm.events({
 
   'click #cancelChanges': function (evt) {
 
@@ -122,9 +122,9 @@ Template.editVmForm.events({
   },
 
   'click #saveChanges': function (evt) {
-    var $form = $('#manage-software-form'),
+    var $form = $('#manage-state-form'),
       data,
-      software
+      state
 
     evt.preventDefault()
 
@@ -145,21 +145,21 @@ Template.editVmForm.events({
 
     data = o;
 
-    software = data.software || []
-    if (!_.isArray(software)) {
-      // ensure software is an array
-      software = [software]
+    state = data.state || []
+    if (!_.isArray(state)) {
+      // ensure state is an array
+      state = [state]
     }
 
-    Meteor.call('updateSoftware',
+    Meteor.call('updateState',
       data._id,
-      software,
+      state,
       function (error, result) {
         if (error) {
           alert(error)
         } else {
-          bootbox.alert('Software updated', function () {
-            $('#user-software').modal('hide')
+          bootbox.alert('State updated', function () {
+            $('#user-state').modal('hide')
           })
         }
       })
@@ -169,7 +169,7 @@ Template.editVmForm.events({
   }
 })
 
-Template.editVmForm.helpers({
+Template.editSearchForm.helpers({
   user: function () {
 
     Meteor.defer(function() {
@@ -182,14 +182,14 @@ Template.editVmForm.helpers({
     return user
   },
 
-  allSoftware: function () {
+  allState: function () {
 
     var fruits = [];
 
-    var software = Software.find({}, {sort: {name: 1}});
+    var states = State.find({}, {sort: {name: 1}});
 
-    software.forEach(function (software) {
-        fruits[fruits.length] = software.name;
+    states.forEach(function (state) {
+        fruits[fruits.length] = state.name;
     });
     return fruits;
   }

@@ -1,1 +1,1 @@
-Software = new Mongo.Collection("software");
+State = new Mongo.Collection("state");
