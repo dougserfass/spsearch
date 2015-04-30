@@ -105,7 +105,9 @@
 }
 
 .user-list,
-.state {
+.state,
+.sector,
+.population {
     list-style:none;
 }
 .user-list > li {
@@ -119,10 +121,14 @@
     color:#555;
     padding: 0.4em 0;
 }
-.state {
+.state,
+.sector,
+.population {
     cursor:pointer;
 }
-.state li {
+.state li,
+.sector li,
+.population li {
     border: 1px solid #667;
     border-radius:0.5em;
     background-color:#e2ffe7;

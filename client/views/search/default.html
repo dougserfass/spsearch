@@ -1,105 +1,89 @@
 <template name="search">
-  <div class="manage-users row">
-    <div class="offset3 span9">
-      <ul class="user-list">
-
-{{#if currentUser}}
-
-            {{#with currentUser}}
-
-        <li>
-          <div class="person" data-id="{{_id}}">
-
-              <div class="name">
-                  <a href="#">State</a>
-              </div>
-
-            <div>
-              <ul class="state">
-                {{#each state}}
-                <li><span class="state">{{.}}</span></li>
-                {{/each}}
-              </ul>
-            </div>
-
-          </div>
-        </li>
-
-            {{/with}}
-
-{{else}}
-
-    {{#with guest}}
-
-
-        <li>
-            <div class="person" data-id="{{_id}}">
-
-                <div class="name">
-                    <a href="#">State</a>
-                </div>
-
-                <div>
-                    <ul class="state">
-                        {{#each state}}
-                            <li><span class="state">{{.}}</span></li>
-                        {{/each}}
-                    </ul>
-                </div>
-
-            </div>
-        </li>
-
-
-
-
-    {{/with}}
-
-{{/if}}
-
-      </ul>
-
-      {{> editSearchForm}}
-
+    <div class="manage-users row">
+        <div class="offset3 span9">
+            <ul class="user-list">
+                {{#if currentUser}}
+                    {{#with currentUser}}
+                        <li>
+                            <div class="person" data-id="{{_id}}">
+                                <div class="name">
+                                    <a href="#">
+                                        state
+                                    </a>
+                                </div>
+                                <div>
+                                    <ul class="state">
+                                        {{#each state}}
+                                            <li>
+                                                <span class="state">
+                                                    {{.}}
+                                                </span>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    {{/with}}
+                {{else}}
+                    {{#with guest}}
+                        <li>
+                            <div class="person" data-id="{{_id}}">
+                                <div class="name">
+                                    <a href="#">
+                                        state
+                                    </a>
+                                </div>
+                                <div>
+                                    <ul class="state">
+                                        {{#each state}}
+                                            <li>
+                                                <span class="state">
+                                                    {{.}}
+                                                </span>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    {{/with}}
+                {{/if}}
+            </ul>
+            {{> editSearchForm}}
+        </div>
     </div>
-  </div>
 </template>
 
 <template name="editSearchForm">
-  <div id="user-state" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <form id="manage-state-form">
-
-      <div class="modal-header">
-        <h3 id="myModalLabel">State</h3>
-      </div>
-
-      <div class="modal-body">
-
-        {{#with user}}
-
-        <input type="hidden" id="_id" name="_id" value="{{_id}}" />
-<!--
-        <div>
-          <h4>{{#each emails}}{{address}} {{/each}}</h4>
-          <h4>{{username}}</h4>
-        </div>
--->
-        <br />
-        <select id="state" name="state" multiple>
-          {{#each allState}}
-          <option value="{{.}}">{{.}}</option>
-          {{/each}}
-        </select>
-        {{/with}}
-      </div>
-
-
-      <div class="modal-footer">
-        <button id="cancelChanges" class="btn">Cancel</button>
-        <button id="saveChanges" class="btn btn-primary">Save changes</button>
-      </div>
-    </form>
-  </div>
+    <div id="user-state" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form id="manage-state-form">
+            <div class="modal-header">
+                <h3 id="myModalLabel">
+                    state
+                </h3>
+            </div>
+            <div class="modal-body">
+                {{#with user}}
+                    <input type="hidden" id="_id" name="_id" value="{{_id}}" />
+                    <br />
+                    <select id="state" name="state" multiple>
+                        {{#each allState}}
+                            <option value="{{.}}">
+                                {{.}}
+                            </option>
+                        {{/each}}
+                    </select>
+                {{/with}}
+            </div>
+            <div class="modal-footer">
+                <button id="cancelChanges" class="btn">
+                    cancel
+                </button>
+                <button id="saveChanges" class="btn btn-primary">
+                    ok
+                </button>
+            </div>
+        </form>
+    </div>
 </template>
-
-
