@@ -2,12 +2,18 @@
 
 Meteor.startup(function () {
     Meteor.subscribe('state')
+    Meteor.subscribe('sector')
+    Meteor.subscribe('population')
     Meteor.subscribe('user')
 })
 
 Template.search.events({
-  'click .name a': manageStateClicked,
-  'click .state': manageStateClicked
+    'click .stateName a': manageStateClicked,
+    'click .state': manageStateClicked,
+    'click .sectorName a': manageSectorClicked,
+    'click .sector': manageSectorClicked,
+    'click .populationName a': managePopulationClicked,
+    'click .population': managePopulationClicked
 })
 
 Template.search.helpers({
@@ -19,6 +25,12 @@ Template.search.helpers({
     },
     state: function () {
         return this.state
+    },
+    sector: function () {
+        return this.sector
+    },
+    population: function () {
+        return this.population
     }
 })
 
@@ -32,7 +44,27 @@ function manageStateClicked (evt) {
     $('#user-state').modal()
 }
 
-var logRender = function () {
+function manageSectorClicked (evt) {
+    var $person,
+        userId
+    evt.preventDefault()
+    $person = $(evt.target).closest('.person')
+    userId = $person.attr('data-id')
+    Session.set('selectedUserId', userId)
+    $('#user-sector').modal()
+}
+
+function managePopulationClicked (evt) {
+    var $person,
+        userId
+    evt.preventDefault()
+    $person = $(evt.target).closest('.person')
+    userId = $person.attr('data-id')
+    Session.set('selectedUserId', userId)
+    $('#user-population').modal()
+}
+
+var logRenderState = function () {
     var userId = Session.get('selectedUserId'),
         user,
         $options
@@ -51,14 +83,66 @@ var logRender = function () {
             $option.removeAttr('selected')
         }
     })
-    renderMultiSelect()
+    renderMultiSelectState()
 };
 
-Template.editSearchForm.rendered = function () {
-    logRender();
+var logRenderSector = function () {
+    var userId = Session.get('selectedUserId'),
+        user,
+        $options
+    if (!userId) return
+    user = Meteor.users.findOne({_id: userId})
+    if (!user) return
+    $options = $('option', '#sector')
+    $options.each(function (index, option) {
+        var $option = $(option),
+            val = $option.val(),
+            hasSector
+        hasSector = _.contains(user.sector, val)
+        if (hasSector) {
+            $option.attr('selected', true)
+        } else {
+            $option.removeAttr('selected')
+        }
+    })
+    renderMultiSelectSector()
+};
+
+var logRenderPopulation = function () {
+    var userId = Session.get('selectedUserId'),
+        user,
+        $options
+    if (!userId) return
+    user = Meteor.users.findOne({_id: userId})
+    if (!user) return
+    $options = $('option', '#population')
+    $options.each(function (index, option) {
+        var $option = $(option),
+            val = $option.val(),
+            hasPopulation
+        hasPopulation = _.contains(user.population, val)
+        if (hasPopulation) {
+            $option.attr('selected', true)
+        } else {
+            $option.removeAttr('selected')
+        }
+    })
+    renderMultiSelectPopulation()
+};
+
+Template.stateForm.rendered = function () {
+    logRenderState();
 }
 
-function renderMultiSelect () {
+Template.sectorForm.rendered = function () {
+    logRenderSector();
+}
+
+Template.populationForm.rendered = function () {
+    logRenderPopulation();
+}
+
+function renderMultiSelectState () {
     var $state,
         data,
         dataExists
@@ -75,7 +159,41 @@ function renderMultiSelect () {
     })
 }
 
-Template.editSearchForm.events({
+function renderMultiSelectSector () {
+    var $sector,
+        data,
+        dataExists
+    if (!jQuery.fn.multiSelect) return
+    $sector = $('#sector')
+    data = $sector.data('multiselect')
+    dataExists = data ? true : false
+    if (dataExists) {
+        $sector.data('multiselect', null)
+    }
+    $sector.multiSelect({
+        selectableHeader: "not selected",
+        selectionHeader: "selected"
+    })
+}
+
+function renderMultiSelectPopulation () {
+    var $population,
+        data,
+        dataExists
+    if (!jQuery.fn.multiSelect) return
+    $population = $('#population')
+    data = $population.data('multiselect')
+    dataExists = data ? true : false
+    if (dataExists) {
+        $population.data('multiselect', null)
+    }
+    $population.multiSelect({
+        selectableHeader: "not selected",
+        selectionHeader: "selected"
+    })
+}
+
+Template.stateForm.events({
     'click #cancelChanges': function (evt) {
         evt.preventDefault()
         location.reload()
@@ -124,10 +242,108 @@ Template.editSearchForm.events({
     }
 })
 
-Template.editSearchForm.helpers({
+Template.sectorForm.events({
+    'click #cancelChanges': function (evt) {
+        evt.preventDefault()
+        location.reload()
+    },
+    'click #saveChanges': function (evt) {
+        var $form = $('#manage-sector-form'),
+            data,
+            sector
+        evt.preventDefault()
+        var o = {},
+            a = $form.serializeArray();
+        $.each(a, function() {
+            var name = this.name
+            if (o[name] !== undefined) {
+                if (!o[name].push) {
+                    o[name] = [o[name]];
+                }
+                o[name].push(this.value || '');
+            } else {
+                o[name] = this.value || '';
+            }
+        });
+        data = o;
+        sector = data.sector || []
+        if (!_.isArray(sector)) {
+            sector = [sector]
+        }
+        Meteor.call(
+            'updateSector',
+            data._id,
+            sector,
+            function (error, result) {
+                if (error) {
+                    alert(error)
+                } else {
+                    bootbox.alert(
+                        'sector updated',
+                        function () {
+                            $('#user-sector').modal('hide')
+                        }
+                    )
+                }
+            }
+        )
+        location.reload()
+    }
+})
+
+Template.populationForm.events({
+    'click #cancelChanges': function (evt) {
+        evt.preventDefault()
+        location.reload()
+    },
+    'click #saveChanges': function (evt) {
+        var $form = $('#manage-population-form'),
+            data,
+            population
+        evt.preventDefault()
+        var o = {},
+            a = $form.serializeArray();
+        $.each(a, function() {
+            var name = this.name
+            if (o[name] !== undefined) {
+                if (!o[name].push) {
+                    o[name] = [o[name]];
+                }
+                o[name].push(this.value || '');
+            } else {
+                o[name] = this.value || '';
+            }
+        });
+        data = o;
+        population = data.population || []
+        if (!_.isArray(population)) {
+            population = [population]
+        }
+        Meteor.call(
+            'updatePopulation',
+            data._id,
+            population,
+            function (error, result) {
+                if (error) {
+                    alert(error)
+                } else {
+                    bootbox.alert(
+                        'population updated',
+                        function () {
+                            $('#user-population').modal('hide')
+                        }
+                    )
+                }
+            }
+        )
+        location.reload()
+    }
+})
+
+Template.stateForm.helpers({
     user: function () {
         Meteor.defer(function() {
-            logRender();
+            logRenderState();
         });
         var userId = Session.get('selectedUserId'),
             user = Meteor.users.findOne({_id: userId})
@@ -138,6 +354,44 @@ Template.editSearchForm.helpers({
         var states = State.find({}, {sort: {name: 1}});
         states.forEach(function (state) {
             fruits[fruits.length] = state.name;
+        });
+        return fruits;
+    }
+})
+
+Template.sectorForm.helpers({
+    user: function () {
+        Meteor.defer(function() {
+            logRenderSector();
+        });
+        var userId = Session.get('selectedUserId'),
+            user = Meteor.users.findOne({_id: userId})
+        return user
+    },
+    allSector: function () {
+        var fruits = [];
+        var sectors = Sector.find({}, {sort: {name: 1}});
+        sectors.forEach(function (sector) {
+            fruits[fruits.length] = sector.name;
+        });
+        return fruits;
+    }
+})
+
+Template.populationForm.helpers({
+    user: function () {
+        Meteor.defer(function() {
+            logRenderPopulation();
+        });
+        var userId = Session.get('selectedUserId'),
+            user = Meteor.users.findOne({_id: userId})
+        return user
+    },
+    allPopulation: function () {
+        var fruits = [];
+        var populations = Population.find({}, {sort: {name: 1}});
+        populations.forEach(function (population) {
+            fruits[fruits.length] = population.name;
         });
         return fruits;
     }

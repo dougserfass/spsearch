@@ -6,7 +6,7 @@
                     {{#with currentUser}}
                         <li>
                             <div class="person" data-id="{{_id}}">
-                                <div class="name">
+                                <div class="stateName">
                                     <a href="#">
                                         state
                                     </a>
@@ -16,6 +16,38 @@
                                         {{#each state}}
                                             <li>
                                                 <span class="state">
+                                                    {{.}}
+                                                </span>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                                <div class="sectorName">
+                                    <a href="#">
+                                        sector
+                                    </a>
+                                </div>
+                                <div>
+                                    <ul class="sector">
+                                        {{#each sector}}
+                                            <li>
+                                                <span class="sector">
+                                                    {{.}}
+                                                </span>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                                <div class="populationName">
+                                    <a href="#">
+                                        population
+                                    </a>
+                                </div>
+                                <div>
+                                    <ul class="population">
+                                        {{#each population}}
+                                            <li>
+                                                <span class="population">
                                                     {{.}}
                                                 </span>
                                             </li>
@@ -29,7 +61,7 @@
                     {{#with guest}}
                         <li>
                             <div class="person" data-id="{{_id}}">
-                                <div class="name">
+                                <div class="stateName">
                                     <a href="#">
                                         state
                                     </a>
@@ -45,17 +77,51 @@
                                         {{/each}}
                                     </ul>
                                 </div>
+                                <div class="sectorName">
+                                    <a href="#">
+                                        sector
+                                    </a>
+                                </div>
+                                <div>
+                                    <ul class="sector">
+                                        {{#each sector}}
+                                            <li>
+                                                <span class="sector">
+                                                    {{.}}
+                                                </span>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                                <div class="populationName">
+                                    <a href="#">
+                                        population
+                                    </a>
+                                </div>
+                                <div>
+                                    <ul class="population">
+                                        {{#each population}}
+                                            <li>
+                                                <span class="population">
+                                                    {{.}}
+                                                </span>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
                             </div>
                         </li>
                     {{/with}}
                 {{/if}}
             </ul>
-            {{> editSearchForm}}
+            {{> stateForm}}
+            {{> sectorForm}}
+            {{> populationForm}}
         </div>
     </div>
 </template>
 
-<template name="editSearchForm">
+<template name="stateForm">
     <div id="user-state" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <form id="manage-state-form">
             <div class="modal-header">
@@ -69,6 +135,72 @@
                     <br />
                     <select id="state" name="state" multiple>
                         {{#each allState}}
+                            <option value="{{.}}">
+                                {{.}}
+                            </option>
+                        {{/each}}
+                    </select>
+                {{/with}}
+            </div>
+            <div class="modal-footer">
+                <button id="cancelChanges" class="btn">
+                    cancel
+                </button>
+                <button id="saveChanges" class="btn btn-primary">
+                    ok
+                </button>
+            </div>
+        </form>
+    </div>
+</template>
+
+<template name="sectorForm">
+    <div id="user-sector" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form id="manage-sector-form">
+            <div class="modal-header">
+                <h3 id="myModalLabel">
+                    sector
+                </h3>
+            </div>
+            <div class="modal-body">
+                {{#with user}}
+                    <input type="hidden" id="_id" name="_id" value="{{_id}}" />
+                    <br />
+                    <select id="sector" name="sector" multiple>
+                        {{#each allSector}}
+                            <option value="{{.}}">
+                                {{.}}
+                            </option>
+                        {{/each}}
+                    </select>
+                {{/with}}
+            </div>
+            <div class="modal-footer">
+                <button id="cancelChanges" class="btn">
+                    cancel
+                </button>
+                <button id="saveChanges" class="btn btn-primary">
+                    ok
+                </button>
+            </div>
+        </form>
+    </div>
+</template>
+
+<template name="populationForm">
+    <div id="user-population" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form id="manage-population-form">
+            <div class="modal-header">
+                <h3 id="myModalLabel">
+                    population
+                </h3>
+            </div>
+            <div class="modal-body">
+                {{#with user}}
+                    <input type="hidden" id="_id" name="_id" value="{{_id}}" />
+                    <br />
+                    <select id="population" name="population" multiple>
+                        {{#each allPopulation}}
                             <option value="{{.}}">
                                 {{.}}
                             </option>

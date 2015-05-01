@@ -113,7 +113,9 @@
 .user-list > li {
     padding:1em;
 }
-.name {
+.stateName,
+.sectorName,
+.populationName {
     font-size:1.4em;
     padding-bottom:0.1em;
 }
