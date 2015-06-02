@@ -6,6 +6,7 @@ Accounts.onCreateUser(function(options, user) {
     user.state = [];
     user.sector = [];
     user.population = [];
+    user.search = "'strategic+plan' + filetype:pdf";
   if(options.profile)
     user.profile = options.profile;
   return user;

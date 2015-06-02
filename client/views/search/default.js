@@ -396,3 +396,21 @@ Template.populationForm.helpers({
         return fruits;
     }
 })
+
+Template.googleSearchBox.helpers({
+    search: function () {
+        return Meteor.user().search
+    }
+})
+
+Template.bingSearchBox.helpers({
+    search: function () {
+        return Meteor.user().search
+    }
+})
+
+Template.yahooSearchBox.helpers({
+    search: function () {
+        return Meteor.user().search
+    }
+})
